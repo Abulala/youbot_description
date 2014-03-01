@@ -4,9 +4,10 @@
        xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface" 
        xmlns:xacro="http://ros.org/wiki/xacro">
  
+  <!-- sensors -->
   <xacro:include filename="$(find youbot_description)/urdf/youbot_base/base.gazebo.xacro"/>
   <xacro:include filename="$(find youbot_description)/urdf/youbot_base/base.transmission.xacro"/>
-
+  
   <!-- simplified box collision geometry for base -->
   <property name="base_size_x" value="0.570"/>
   <property name="base_size_y" value="0.360"/>
@@ -40,6 +41,34 @@
 
 
   <xacro:macro name="youbot_base" params="name">
+<!--     <link name="odom" />
+    <joint name="base_x_joint" type="prismatic">
+      <origin xyz="0 0 0.07" rpy="0 0 0"/>
+      <limit effort="10.0" lower="-5.0" upper="5.0" velocity="0.1"/>
+      <child link="dummy_link_x"/>
+      <parent link="odom"/>
+    </joint>
+
+    <link name="dummy_link_x" />
+
+    <joint name="base_y_joint" type="prismatic">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <limit effort="10.0" lower="-5.0" upper="5.0" velocity="0.1"/>
+      <axis xyz="0 1 0"/>
+      <child link="dummy_link_y"/>
+      <parent link="dummy_link_x"/>
+    </joint>
+
+    <link name="dummy_link_y" />
+
+    <joint name="base_rotational_joint" type="continuous">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <limit effort="10.0" velocity="0.1"/>
+      <axis xyz="0 0 1"/>
+      <child link="base_link"/>
+      <parent link="dummy_link_y"/>
+    </joint> -->
+
     <link name="${name}_footprint">
       <inertial>
         <mass value="0.1"/>
@@ -51,7 +80,7 @@
         <geometry>
           <box size="0.001 0.001 0.001"/>
         </geometry>
-        <material name="youBot/Red"/>
+        <material name="Red"/>
       </visual>
       <collision>
         <origin xyz="0 0 ${-base_size_z / 2.0}" rpy="0 0 0"/>
@@ -77,7 +106,7 @@
         <geometry>
           <mesh filename="package://youbot_description/meshes/youbot_base/base.dae"/>
         </geometry>
-        <material name="youBot/DarkGrey"/>
+        <material name="DarkGrey"/>
       </visual>
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -89,7 +118,7 @@
     </link>
 
     <!-- front left wheel -->
-    <joint name="caster_joint_fl" type="continuous">
+    <joint name="caster_joint_fl" type="fixed">
       <origin xyz="${caster_offset_x} ${caster_offset_y} ${caster_offset_z}" rpy="0 0 0"/>
       <axis xyz="0 0 1"/>
       <limit effort="${caster_joint_effort}" velocity="${caster_joint_velocity}"/>
@@ -125,9 +154,9 @@
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <!--<mesh filename="package://youbot_description/meshes/youbot_base/youbot_wheel.stl" />-->
         <geometry>
-          <sphere radius="${wheel_radius}"/>
+          <mesh filename="package://youbot_description/meshes/youbot_base/front-left_wheel.dae" />
         </geometry>
-        <material name="youBot/Orange"/>
+        <material name="Orange"/>
       </visual>
       <collision>
         <origin xyz="0 0 0" rpy="${M_PI/2} 0 0"/>
@@ -138,7 +167,7 @@
     </link>
 
     <!-- front right wheel -->
-    <joint name="caster_joint_fr" type="continuous">
+    <joint name="caster_joint_fr" type="fixed">
       <origin xyz="${caster_offset_x} ${-caster_offset_y} ${caster_offset_z}" rpy="0 0 0"/>
       <axis xyz="0 0 1"/>
       <limit effort="${caster_joint_effort}" velocity="${caster_joint_velocity}"/>
@@ -174,9 +203,9 @@
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
           <!--<mesh filename="package://youbot_description/meshes/youbot_base/youbot_wheel.stl" />-->
-          <sphere radius="${wheel_radius}"/>
+          <mesh filename="package://youbot_description/meshes/youbot_base/front-right_wheel.dae" />
         </geometry>
-        <material name="youBot/Orange"/>
+        <material name="Orange"/>
       </visual>
       <collision>
         <origin xyz="0 0 0" rpy="${M_PI/2} 0 0"/>
@@ -187,7 +216,7 @@
     </link>
 
     <!-- back left wheel -->
-    <joint name="caster_joint_bl" type="continuous">
+    <joint name="caster_joint_bl" type="fixed">
       <origin xyz="${-caster_offset_x} ${caster_offset_y} ${caster_offset_z}" rpy="0 0 0"/>
       <axis xyz="0 0 1"/>
       <limit effort="${caster_joint_effort}" velocity="${caster_joint_velocity}"/>
@@ -224,9 +253,9 @@
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
           <!--<mesh filename="package://youbot_description/meshes/youbot_base/youbot_wheel.stl" />-->
-          <sphere radius="${wheel_radius}"/>
+          <mesh filename="package://youbot_description/meshes/youbot_base/back-left_wheel.dae" />
         </geometry>
-        <material name="youBot/Orange"/>
+        <material name="Orange"/>
       </visual>
       <collision>
         <origin xyz="0 0 0" rpy="${M_PI/2} 0 0"/>
@@ -237,7 +266,7 @@
     </link>
 
     <!-- back right wheel -->
-    <joint name="caster_joint_br" type="continuous">
+    <joint name="caster_joint_br" type="fixed">
       <origin xyz="${-caster_offset_x} ${-caster_offset_y} ${caster_offset_z}" rpy="0 0 0"/>
       <axis xyz="0 0 1"/>
       <limit effort="${caster_joint_effort}" velocity="${caster_joint_velocity}"/>
@@ -273,9 +302,9 @@
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
           <!--<mesh filename="package://youbot_description/meshes/youbot_base/youbot_wheel.stl" />-->
-          <sphere radius="${wheel_radius}"/>
+          <mesh filename="package://youbot_description/meshes/youbot_base/back-right_wheel.dae" />
         </geometry>
-        <material name="youBot/Orange"/>
+        <material name="Orange"/>
       </visual>
       <collision>
         <origin xyz="0 0 0" rpy="${M_PI/2} 0 0"/>
